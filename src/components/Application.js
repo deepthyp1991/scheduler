@@ -32,9 +32,27 @@ function bookInterview(id, interview) {
     ...state,
     appointments
   });
-  return axios.put(`/api/appointments/:${id}`,{'interview':interview}).then(() => setState({...state,appointments}))
+  return axios.put(`/api/appointments/${id}`,{'interview':interview}).then(() => setState({...state,appointments}))
 }
 
+function cancelInterview (id,interview) {
+  const appointment = {
+    ...state.appointments[id],
+    interview: { ...interview }
+  };
+  const appointments = {
+    ...state.appointments,
+    [id]: appointment
+  };
+  
+  setState({
+    ...state,
+    appointments
+  });
+  console.log(id,interview);
+  return axios.delete(`http://localhost:8001/api/appointments/${id}`).then(() => setState({...state,appointments}))
+
+ }
 const setDay = day => setState(prev => ({ ...prev, day }));
 const dailyAppointments = getAppointmentsForDay(state,state.day)
 const interviewers = getInterviewersForDay(state,state.day)
@@ -49,6 +67,7 @@ const AppointmentList = dailyAppointments.map((appointment)=> {
     interview = {interview}
     interviewers = {interviewers}
     bookInterview = {bookInterview}
+    cancelInterview = {cancelInterview}
     />
   )
 
