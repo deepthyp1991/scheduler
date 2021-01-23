@@ -35,21 +35,21 @@ function bookInterview(id, interview) {
   return axios.put(`/api/appointments/${id}`,{'interview':interview}).then(() => setState({...state,appointments}))
 }
 
-function cancelInterview (id,interview) {
+function cancelInterview (id) {
   const appointment = {
     ...state.appointments[id],
-    interview: { ...interview }
+    interview: null
   };
   const appointments = {
     ...state.appointments,
     [id]: appointment
   };
   
-  setState({
-    ...state,
-    appointments
-  });
-  console.log(id,interview);
+  // setState({
+  //   ...state,
+  //   appointments
+  // });
+
   return axios.delete(`http://localhost:8001/api/appointments/${id}`).then(() => setState({...state,appointments}))
 
  }
