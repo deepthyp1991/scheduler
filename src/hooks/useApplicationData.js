@@ -11,11 +11,22 @@ export default function useApplicationData() {
   
   });
 
-  const setDay = day => setState(prev => ({ ...prev, day }));
-
-  
+  const setDay = day => setState(prev => ({ ...prev, day }))
 
 function bookInterview(id, interview) {
+
+  let days = state.days;
+  if(!state.appointments[id].interview) {
+    days = state.days.map(day => {
+      const dayCopy = {...day}
+      if(dayCopy.appointments.includes(id)) {
+        dayCopy.spots --
+        return dayCopy
+      } else {
+        return dayCopy
+      }
+    })
+  }
    
   const appointment = {
     ...state.appointments[id],
@@ -26,10 +37,20 @@ function bookInterview(id, interview) {
     [id]: appointment
   };
 
-  return axios.put(`/api/appointments/${id}`,{'interview':interview}).then(() => setState({...state,appointments})
+  return axios.put(`/api/appointments/${id}`,{'interview':interview}).then(() => setState({...state,appointments, days})
   )
 }
  function cancelInterview (id) {
+  let days = state.days;
+    days = state.days.map(day => {
+      const dayCopy = {...day}
+      if(dayCopy.appointments.includes(id)) {
+        dayCopy.spots ++
+        return dayCopy
+      } else {
+        return dayCopy
+      }
+    })
   const nullAppointment = {
     ...state.appointments[id],
     interview: null
@@ -39,7 +60,7 @@ function bookInterview(id, interview) {
     [id]: nullAppointment
   };
   
-  return axios.delete(`/api/appointments/${id}`).then(() => setState({...state,appointments}))
+  return axios.delete(`/api/appointments/${id}`).then(() => setState({...state,appointments,days}))
 
  }
 
