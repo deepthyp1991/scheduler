@@ -3,6 +3,8 @@ import { render, cleanup, waitForElement, fireEvent, prettyDOM, getAllByTestId, 
 
 import Application from "components/Application";
 
+import axios from "axios"
+
 afterEach(cleanup);
 describe("Application", () => {
 
@@ -144,7 +146,7 @@ it("shows the save error when failing to save an appointment", async () => {
   expect(getByText(selectedDay, /1 spot remaining/i)).toBeInTheDocument();
 
 });
-it("shows the delete error when failing to delete an appointment", async () => {
+it("shows the delete error when failing to delete an existing appointment", async () => {
   axios.delete.mockRejectedValueOnce();
 
   const { container, debug } = render(<Application />);
