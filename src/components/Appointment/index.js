@@ -43,9 +43,6 @@ function deleteApp() {
  
 
 };
-  
-
-  
   return (
     <article className="appointment"  data-testid="appointment" >
       <Header time={props.time} />
@@ -70,10 +67,10 @@ function deleteApp() {
       />
       )}
        {mode === SAVING && (
-        <Status message="Saving" />
+        <Status message= "Saving" />
       )}
        {mode === DELETING && (
-        <Status message="DELETING" />
+        <Status message= "Deleting" />
       )}
       {mode === CONFIRM && (
         <Confirm 
